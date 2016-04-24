@@ -1,0 +1,7 @@
+isElementPresent    -- should be 
+areElementsPresents -- conditions?
+------------------------------------------------------
+Should be DriverCondition and DriverConditions?
+------------------------------------------------------
+waitUntilIsElementPresent    -- should be in 
+waitUntilAreElementsPresents -- Element and Driver?
