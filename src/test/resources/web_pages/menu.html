@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>Menus</title>
+    
+    <style type="text/css">
+      .menu {
+        list-style-type: none;
+        padding: 0;
+        cursor: pointer;
+      }
+      
+      #main_menu {
+        display: inline;
+      }
+      
+      #main_menu > .menuitem {
+        display: inline-block;
+      }
+      
+      .menu .menu {
+        position: absolute;
+        display: none;
+        background-color: gray;
+      }
+      
+      .menu .menuitem:hover .menu {
+        display: block;
+      }
+      
+      #main_menu > .menuitem:hover {
+        background-color: gray;
+      }
+      
+      .menuitem .menuitem:hover {
+        background-color: lightgray;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="main_menu" class="menu">
+      <li class="menuitem">
+        <span>Users</span>
+        <ul class="menu">
+          <li class="menuitem"><span>New user</span></li>
+          <li class="menuitem"><span>Remove user</span></li>
+        </ul>
+      </li>
+      <li class="menuitem">
+        <span>Reports</span>
+        <ul class="menu">
+          <li class="menuitem"><span>Visits average</span></li>
+          <li class="menuitem"><span>Existing users</span></li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html>
