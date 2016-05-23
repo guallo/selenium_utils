@@ -19,10 +19,13 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.google.common.base.Function;
 import com.google.common.io.Files;
@@ -30,7 +33,7 @@ import com.google.common.io.Files;
 import selenium_utils.None;
 
 @RunWith(Suite.class)
-@SuiteClasses({ MenuTest.class })
+@SuiteClasses({ MenuTest.class, ScreenshotTest.class })
 public class FirefoxTestSuite {
 	private static File _tmpDir;
 	private static File _extractDir;
@@ -47,7 +50,10 @@ public class FirefoxTestSuite {
 			
 			@Override
 			public WebDriver apply(None input) {
-				return new FirefoxDriver(new FirefoxBinary(new File(FirefoxTestSuite._extractDir.getAbsolutePath() + File.separator + "firefox" + File.separator + "firefox")), new FirefoxProfile());
+				DesiredCapabilities dc = new DesiredCapabilities();
+				dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
+				
+				return new FirefoxDriver(new FirefoxBinary(new File(FirefoxTestSuite._extractDir.getAbsolutePath() + File.separator + "firefox" + File.separator + "firefox")), new FirefoxProfile(), dc);
 			}
 		};
 	}

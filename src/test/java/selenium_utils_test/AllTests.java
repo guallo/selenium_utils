@@ -36,6 +36,7 @@ public class AllTests {
 		AllTests._tmpDir = Files.createTempDir();
 		
 		_installResourceFile("/web_pages/menu.html", AllTests._tmpDir);
+		_installResourceFile("/web_pages/alert.html", AllTests._tmpDir);
 	}
 	
 	private static void _removeWebPages() throws IOException {
