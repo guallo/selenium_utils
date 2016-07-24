@@ -1,5 +1,7 @@
 package selenium_utils;
 
+import org.openqa.selenium.By;
+
 public final class ExpectedElementConditions {
 	
 	public static ExpectedElementCondition not(final ExpectedElementCondition condition) {
@@ -73,6 +75,36 @@ public final class ExpectedElementConditions {
 			@Override
 			public None apply(Element element) {
 				if (ElementConditions.isStale().apply(element).booleanValue()) {
+					return None.getInstance();
+				}
+				return null;
+			}
+		};
+	}
+	
+	public static ExpectedElementCondition isElementPresent(final By locator) {
+		return new ExpectedElementCondition() {
+			
+			@Override
+			public None apply(Element element) {
+				if (ElementConditions.isElementPresent(locator).apply(element).booleanValue()) {
+					return None.getInstance();
+				}
+				return null;
+			}
+		};
+	}
+	
+	public static ExpectedElementCondition areElementsPresents(By locator) {
+		return areElementsPresents(locator, Globals.DEFAULT_AT_LEAST);
+	}
+	
+	public static ExpectedElementCondition areElementsPresents(final By locator, final int atLeast) {
+		return new ExpectedElementCondition() {
+			
+			@Override
+			public None apply(Element element) {
+				if (ElementConditions.areElementsPresents(locator, Constants.TIME_OUT_0, Globals.DEFAULT_SLEEP_IN_MILLIS, atLeast).apply(element).booleanValue()) {
 					return None.getInstance();
 				}
 				return null;

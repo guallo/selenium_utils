@@ -1,5 +1,7 @@
 package selenium_utils;
 
+import org.openqa.selenium.By;
+
 public final class ElementConditions {
 	
 	public static ElementCondition not(final ElementCondition condition) {
@@ -118,6 +120,54 @@ public final class ElementConditions {
 			@Override
 			public Boolean apply(Element element) {
 				return element.isStale(timeOutInSeconds, sleepInMillis);
+			}
+		};
+	}
+	
+	/**
+	 * isElementPresent
+	 */
+	
+	public static ElementCondition isElementPresent(By locator) {
+		return ElementConditions.isElementPresent(locator, Constants.TIME_OUT_0, Globals.DEFAULT_SLEEP_IN_MILLIS);
+	}
+	
+	public static ElementCondition isElementPresent(By locator, long timeOutInSeconds) {
+		return ElementConditions.isElementPresent(locator, timeOutInSeconds, Globals.DEFAULT_SLEEP_IN_MILLIS);
+	}
+	
+	public static ElementCondition isElementPresent(final By locator, final long timeOutInSeconds, final long sleepInMillis) {
+		return new ElementCondition() {
+			
+			@Override
+			public Boolean apply(Element element) {
+				return element.isElementPresent(locator, timeOutInSeconds, sleepInMillis);
+			}
+		};
+	}
+	
+	/**
+	 * areElementsPresents
+	 */
+	
+	public static ElementCondition areElementsPresents(By locator) {
+		return ElementConditions.areElementsPresents(locator, Constants.TIME_OUT_0, Globals.DEFAULT_SLEEP_IN_MILLIS, Globals.DEFAULT_AT_LEAST);
+	}
+	
+	public static ElementCondition areElementsPresents(By locator, long timeOutInSeconds) {
+		return ElementConditions.areElementsPresents(locator, timeOutInSeconds, Globals.DEFAULT_SLEEP_IN_MILLIS, Globals.DEFAULT_AT_LEAST);
+	}
+	
+	public static ElementCondition areElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis) {
+		return ElementConditions.areElementsPresents(locator, timeOutInSeconds, sleepInMillis, Globals.DEFAULT_AT_LEAST);
+	}
+	
+	public static ElementCondition areElementsPresents(final By locator, final long timeOutInSeconds, final long sleepInMillis, final int atLeast) {
+		return new ElementCondition() {
+			
+			@Override
+			public Boolean apply(Element element) {
+				return element.areElementsPresents(locator, timeOutInSeconds, sleepInMillis, atLeast);
 			}
 		};
 	}

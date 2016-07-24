@@ -652,6 +652,46 @@ public class Element implements WrapsElement, AdvancedSearchContext {
 	}
 	
 	/**
+	 * waitUntilIsElementPresent
+	 */
+	
+	public Element waitUntilIsElementPresent(By locator) {
+		return waitUntilIsElementPresent(locator, Globals.DEFAULT_TIME_OUT_IN_SECONDS, Globals.DEFAULT_SLEEP_IN_MILLIS);
+	}
+	
+	public Element waitUntilIsElementPresent(By locator, long timeOutInSeconds) {
+		return waitUntilIsElementPresent(locator, timeOutInSeconds, Globals.DEFAULT_SLEEP_IN_MILLIS);
+	}
+	
+	public Element waitUntilIsElementPresent(By locator, long timeOutInSeconds, long sleepInMillis) {
+		ElementWait wait = new ElementWait(this, timeOutInSeconds, sleepInMillis);
+		wait.until(ExpectedElementConditions.isElementPresent(locator));
+		return this;
+	}
+	
+	/**
+	 * waitUntilAreElementsPresents
+	 */
+	
+	public Element waitUntilAreElementsPresents(By locator) {
+		return waitUntilAreElementsPresents(locator, Globals.DEFAULT_TIME_OUT_IN_SECONDS, Globals.DEFAULT_SLEEP_IN_MILLIS, Globals.DEFAULT_AT_LEAST);
+	}
+	
+	public Element waitUntilAreElementsPresents(By locator, long timeOutInSeconds) {
+		return waitUntilAreElementsPresents(locator, timeOutInSeconds, Globals.DEFAULT_SLEEP_IN_MILLIS, Globals.DEFAULT_AT_LEAST);
+	}
+	
+	public Element waitUntilAreElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis) {
+		return waitUntilAreElementsPresents(locator, timeOutInSeconds, sleepInMillis, Globals.DEFAULT_AT_LEAST);
+	}
+	
+	public Element waitUntilAreElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis, int atLeast) {
+		ElementWait wait = new ElementWait(this, timeOutInSeconds, sleepInMillis);
+		wait.until(ExpectedElementConditions.areElementsPresents(locator, atLeast));
+		return this;
+	}
+	
+	/**
 	 * waitUntilContainsTheText
 	 */
 	
