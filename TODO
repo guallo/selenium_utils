@@ -1,8 +1,1 @@
-Element.waitUntilClicked                     is this correct? If so then must be a Condition, etc...
-Element.waitUntilDoubleClicked               is this correct? If so then must be a Condition, etc...
-
-Element.isElementPresent must call Element.waitUntilIsElementPresent
-Element.areElementsPresents must call Element.waitUntilAreElementsPresents
-
-Driver.isElementPresent must call Driver.waitUntilIsElementPresent
-Driver.areElementsPresents must call Driver.waitUntilAreElementsPresents
+Actions Chain Framework
