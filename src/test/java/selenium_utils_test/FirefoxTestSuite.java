@@ -37,15 +37,17 @@ import selenium_utils.None;
 public class FirefoxTestSuite {
 	private static File _tmpDir;
 	private static File _extractDir;
-	private static File _tarBz2File;
-	private static File _tarFile;
-	private static final String _tarBz2Filename = "firefox-44.0.2.tar.bz2";
-	private static final String _tarFilename = "firefox-44.0.2.tar";
-	private static final String _extractDirname = "firefox-44.0.2";
 	
 	@BeforeClass
 	public static void setup() throws IOException, ArchiveException {
-		FirefoxTestSuite._installFirefox();
+		String browserType = CommonTestParameters.testProperties.getProperty("browser.type");
+		String browserVersion = CommonTestParameters.testProperties.getProperty("browser.version");
+		String browserArch = CommonTestParameters.testProperties.getProperty("browser.arch");
+		String browserLang = CommonTestParameters.testProperties.getProperty("browser.lang");
+		String browserTarBz2Filename = CommonTestParameters.testProperties.getProperty("browser.tar.bz2.filename");
+		String browserBinaryPath = CommonTestParameters.testProperties.getProperty("browser.binary.path").replace('/', File.separatorChar);
+		
+		FirefoxTestSuite._installBrowser(browserType, browserVersion, browserArch, browserLang, browserTarBz2Filename);
 		CommonTestParameters.webDriverFactory = new Function<None, WebDriver>() {
 			
 			@Override
@@ -53,7 +55,7 @@ public class FirefoxTestSuite {
 				DesiredCapabilities dc = new DesiredCapabilities();
 				dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
 				
-				return new FirefoxDriver(new FirefoxBinary(new File(FirefoxTestSuite._extractDir.getAbsolutePath() + File.separator + "firefox" + File.separator + "firefox")), new FirefoxProfile(), dc);
+				return new FirefoxDriver(new FirefoxBinary(new File(FirefoxTestSuite._extractDir.getAbsolutePath() + File.separator + browserBinaryPath)), new FirefoxProfile(), dc);
 			}
 		};
 	}
@@ -61,27 +63,27 @@ public class FirefoxTestSuite {
 	@AfterClass
 	public static void tearDown() throws IOException {
 		CommonTestParameters.webDriverFactory = null;
-		FirefoxTestSuite._removeFirefox();
+		FirefoxTestSuite._removeBrowser();
 	}
 	
-	private static void _installFirefox() throws IOException, ArchiveException {
+	private static void _installBrowser(String type, String version, String arch, String lang, String tarBz2Filename) throws IOException, ArchiveException {
 		// Copy to temporary directory
 		
 		FirefoxTestSuite._tmpDir = Files.createTempDir();
-		FirefoxTestSuite._tarBz2File = new File(FirefoxTestSuite._tmpDir, FirefoxTestSuite._tarBz2Filename);
-		FirefoxTestSuite._tarFile = new File(FirefoxTestSuite._tmpDir, FirefoxTestSuite._tarFilename);
+		File tarBz2File = new File(FirefoxTestSuite._tmpDir, tarBz2Filename);
+		File tarFile = new File(FirefoxTestSuite._tmpDir, tarBz2Filename.replaceAll("\\.bz2$", ""));
 		
-		InputStream tarBz2ResourceInputStream = FirefoxTestSuite.class.getResourceAsStream("/" + FirefoxTestSuite._tarBz2Filename);
-		FileOutputStream tarBz2FileOutputStream = new FileOutputStream(FirefoxTestSuite._tarBz2File);
+		InputStream tarBz2ResourceInputStream = FirefoxTestSuite.class.getResourceAsStream("/browsers/" + type + "/" + version + "/" + arch + "/" + lang + "/" + tarBz2Filename);
+		FileOutputStream tarBz2FileOutputStream = new FileOutputStream(tarBz2File);
 		IOUtils.copy(tarBz2ResourceInputStream, tarBz2FileOutputStream);
 		tarBz2FileOutputStream.close();
 		tarBz2ResourceInputStream.close();
 		
 		// decompress
 		
-		FileInputStream tarBz2FileInputStream = new FileInputStream(FirefoxTestSuite._tarBz2File);
+		FileInputStream tarBz2FileInputStream = new FileInputStream(tarBz2File);
 		BufferedInputStream tarBz2BufferedInputStream = new BufferedInputStream(tarBz2FileInputStream);
-		FileOutputStream tarFileOutputStream = new FileOutputStream(FirefoxTestSuite._tarFile);
+		FileOutputStream tarFileOutputStream = new FileOutputStream(tarFile);
 		BZip2CompressorInputStream bZip2CompressorInputStream = new BZip2CompressorInputStream(tarBz2BufferedInputStream);
 		final byte[] buffer = new byte[1024 * 4];
 		int bytesReaded = 0;
@@ -97,9 +99,9 @@ public class FirefoxTestSuite {
 		
 		// extract
 		
-		FirefoxTestSuite._extractDir = new File(FirefoxTestSuite._tmpDir, FirefoxTestSuite._extractDirname);
+		FirefoxTestSuite._extractDir = new File(FirefoxTestSuite._tmpDir, tarBz2Filename.replaceAll("\\.tar\\.bz2$", ""));
 		FirefoxTestSuite._extractDir.mkdir();
-		final InputStream tarFileInputStream = new FileInputStream(FirefoxTestSuite._tarFile);
+		final InputStream tarFileInputStream = new FileInputStream(tarFile);
 		final TarArchiveInputStream tarArchiveInputStream = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", tarFileInputStream);
 		TarArchiveEntry entry = null;
 		
@@ -126,7 +128,7 @@ public class FirefoxTestSuite {
 		tarArchiveInputStream.close();
 	}
 	
-	private static void _removeFirefox() throws IOException {
+	private static void _removeBrowser() throws IOException {
 		// delete temporary directory
 		
 		FileUtils.deleteDirectory(FirefoxTestSuite._tmpDir);

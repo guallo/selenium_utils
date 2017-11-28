@@ -1,7 +1,5 @@
 package selenium_utils_test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
