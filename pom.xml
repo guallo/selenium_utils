@@ -6,16 +6,10 @@
   <name>Selenium Utils</name>
   
   <repositories>
-  	<repository>
-        <id>repo-repo1</id>
-        <name>Repo Repo1</name>
-        <url>http://repo1.maven.org/maven2/</url>
-    </repository>
-    
     <repository>
-        <id>repo-central</id>
-        <name>Repo Central</name>
-        <url>http://central.maven.org/maven2/</url>
+        <id>central-repository</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2/</url>
     </repository>
   </repositories>
   
@@ -23,12 +17,6 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>2.52.0</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-server</artifactId>
       <version>2.52.0</version>
     </dependency>
     
