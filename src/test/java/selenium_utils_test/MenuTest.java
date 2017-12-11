@@ -2,24 +2,36 @@ package selenium_utils_test;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import selenium_utils.Driver;
 import selenium_utils.Element;
-import selenium_utils.None;
 
-public class MenuTest {
+public class MenuTest extends CommonTestSetup {
+	
+	@BeforeClass
+	public static void MenuTest_setupClass() throws IOException {
+		installWebPage("menu.html");
+	}
+	
+	@AfterClass
+	public static void MenuTest_tearDownClass() throws IOException {
+		uninstallWebPage("menu.html");
+	}
 
 	@Test
 	public void testMouseOver() {
-		WebDriver webDriver = CommonTestParameters.webDriverFactory.apply(None.getInstance());
+		WebDriver webDriver = getWebDriver();
 		Driver driver = new Driver(webDriver);
 		
-		webDriver.get("file://" + CommonTestParameters.webPagesDirectory.getAbsolutePath() + "/menu.html");
+		webDriver.get("file://" + getWebPage("menu.html").getAbsolutePath());
 		
 		String grayColor = "^rgba\\(128, 128, 128, 1\\)$";
 		String lightgrayColor = "^rgba\\(211, 211, 211, 1\\)$";
@@ -43,7 +55,5 @@ public class MenuTest {
 				}
 			}
 		}
-		
-		webDriver.close();
 	}
 }
