@@ -6,6 +6,7 @@ import java.util.Properties;
 
 
 public class TestProperties extends Properties {
+	private static final long serialVersionUID = 1L;
 	private static TestProperties instance;
 	
 	private TestProperties() throws IOException {

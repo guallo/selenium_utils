@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
+
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -28,6 +30,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import com.google.common.io.Files;
 
 public class CommonTestSetup {
+	protected static Logger logger = Logger.getLogger(CommonTestSetup.class.getName());
+	
 	private static File tempDir;
 	private static File browserInstallationDir;
 	private static File webPagesInstallationDir;
@@ -65,6 +69,8 @@ public class CommonTestSetup {
 	
 	@BeforeClass
 	public static void CommonTestSetup_setupClass() throws IOException, ArchiveException {
+		logger.entering(CommonTestSetup.class.getName(), "CommonTestSetup_setupClass");
+		
 		createTempDir();
 		
 		String browserType = TestProperties.getInstance().getProperty("browser.type");
@@ -79,6 +85,8 @@ public class CommonTestSetup {
 	
 	@AfterClass
 	public static void CommonTestSetup_tearDownClass() throws IOException {
+		logger.entering(CommonTestSetup.class.getName(), "CommonTestSetup_tearDownClass");
+		
 		uninstallWebPages();
 		uninstallBrowser();
 		removeTempDir();
@@ -86,6 +94,8 @@ public class CommonTestSetup {
 	
 	@Before
 	public void CommonTestSetup_setupMethod() throws IOException {
+		logger.entering(CommonTestSetup.class.getName(), "CommonTestSetup_setupMethod");
+		
 		String browserBinaryPath = TestProperties.getInstance().getProperty("browser.binary.path");
 		String absBrowserBinaryPath = browserInstallationDir.getAbsolutePath() + File.separator + browserBinaryPath.replace('/', File.separatorChar);
 		
@@ -97,6 +107,8 @@ public class CommonTestSetup {
 	
 	@After
 	public void CommonTestSetup_tearDownMethod() {
+		logger.entering(CommonTestSetup.class.getName(), "CommonTestSetup_tearDownMethod");
+		
 		webDriver.quit();
 		webDriver = null;
 	}

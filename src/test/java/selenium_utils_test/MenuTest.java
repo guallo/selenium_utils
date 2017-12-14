@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,14 +16,19 @@ import selenium_utils.Driver;
 import selenium_utils.Element;
 
 public class MenuTest extends CommonTestSetup {
+	protected static Logger logger = Logger.getLogger(MenuTest.class.getName());
 	
 	@BeforeClass
 	public static void MenuTest_setupClass() throws IOException {
+		logger.entering(MenuTest.class.getName(), "MenuTest_setupClass");
+		
 		installWebPage("menu.html");
 	}
 	
 	@AfterClass
 	public static void MenuTest_tearDownClass() throws IOException {
+		logger.entering(MenuTest.class.getName(), "MenuTest_tearDownClass");
+		
 		uninstallWebPage("menu.html");
 	}
 
