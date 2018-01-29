@@ -21,6 +21,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -102,7 +105,27 @@ public class CommonTestSetup {
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
 		
-		webDriver = new FirefoxDriver(new FirefoxBinary(new File(absBrowserBinaryPath)), new FirefoxProfile(), dc);
+		String browserType = TestProperties.getInstance().getProperty("browser.type");
+		
+		if (browserType.equals("firefox")) {
+			webDriver = new FirefoxDriver(new FirefoxBinary(new File(absBrowserBinaryPath)), new FirefoxProfile(), dc);
+		}
+		else if (browserType.equals("chromium")) {
+			System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, absBrowserBinaryPath);
+			
+			String chromiumBinaryPath = TestProperties.getInstance().getProperty("chromium.binary.path");
+			String absChromiumBinaryPath = browserInstallationDir.getAbsolutePath() + File.separator + chromiumBinaryPath.replace('/', File.separatorChar);
+			
+			ChromeOptions co = new ChromeOptions();
+			co.setBinary(absChromiumBinaryPath);
+			
+			dc.setCapability(ChromeOptions.CAPABILITY, co);
+			
+			webDriver = new ChromeDriver(dc);
+		}
+		else {
+			throw new TypeNotPresentException(browserType, null);
+		}
 	}
 	
 	@After
