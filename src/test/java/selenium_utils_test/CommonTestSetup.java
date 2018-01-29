@@ -151,7 +151,7 @@ public class CommonTestSetup {
 		File tarFile = new File(tempDir, tarBz2Basename.replaceAll("\\.bz2$", ""));
 		
 		InputStream tarBz2ResourceInputStream = CommonTestSetup.class.getResourceAsStream(
-			"/browsers/" + type + "/" + version + "/" + arch + "/" + tarBz2Basename
+			"/drivers/" + type + "/" + version + "/" + arch + "/" + tarBz2Basename
 		);
 		FileOutputStream tarBz2FileOutputStream = new FileOutputStream(tarBz2File);
 		IOUtils.copy(tarBz2ResourceInputStream, tarBz2FileOutputStream);

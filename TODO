@@ -1,5 +1,4 @@
 1) Actions Chain Framework.
 2) Check for the release of a Chromium Driver (on https://chromedriver.storage.googleapis.com/index.html)
 	that supports the current Chromium Browser version.
-3) Rename 'browsers' resource to 'drivers'.
-4) Put Driver version instead of Browser version into 'driver.version' property.
+3) Put Driver version instead of Browser version into 'driver.version' property.
