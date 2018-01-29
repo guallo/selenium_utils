@@ -1,4 +1,5 @@
 1) Actions Chain Framework.
 2) Check for the release of a Chromium Driver (on https://chromedriver.storage.googleapis.com/index.html)
 	that supports the current Chromium Browser version.
-3) Improve the nomenclature on test.properties.
+3) Rename 'browsers' resource to 'drivers'.
+4) Remove 'driver.lang' property and corresponding resource folder.

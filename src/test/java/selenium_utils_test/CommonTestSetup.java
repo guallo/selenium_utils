@@ -36,7 +36,7 @@ public class CommonTestSetup {
 	protected static Logger logger = Logger.getLogger(CommonTestSetup.class.getName());
 	
 	private static File tempDir;
-	private static File browserInstallationDir;
+	private static File driverInstallationDir;
 	private static File webPagesInstallationDir;
 	
 	private WebDriver webDriver;
@@ -76,13 +76,13 @@ public class CommonTestSetup {
 		
 		createTempDir();
 		
-		String browserType = TestProperties.getInstance().getProperty("browser.type");
-		String browserVersion = TestProperties.getInstance().getProperty("browser.version");
-		String browserArch = TestProperties.getInstance().getProperty("browser.arch");
-		String browserLang = TestProperties.getInstance().getProperty("browser.lang");
-		String browserTarBz2Filename = TestProperties.getInstance().getProperty("browser.tar.bz2.filename");
+		String driverType = TestProperties.getInstance().getProperty("driver.type");
+		String driverVersion = TestProperties.getInstance().getProperty("driver.version");
+		String driverArch = TestProperties.getInstance().getProperty("driver.arch");
+		String driverLang = TestProperties.getInstance().getProperty("driver.lang");
+		String driverTarBz2Basename = TestProperties.getInstance().getProperty("driver.tar.bz2.basename");
 		
-		installBrowser(browserType, browserVersion, browserArch, browserLang, browserTarBz2Filename);
+		installDriver(driverType, driverVersion, driverArch, driverLang, driverTarBz2Basename);
 		installWebPages();
 	}
 	
@@ -91,7 +91,7 @@ public class CommonTestSetup {
 		logger.entering(CommonTestSetup.class.getName(), "CommonTestSetup_tearDownClass");
 		
 		uninstallWebPages();
-		uninstallBrowser();
+		uninstallDriver();
 		removeTempDir();
 	}
 	
@@ -99,32 +99,32 @@ public class CommonTestSetup {
 	public void CommonTestSetup_setupMethod() throws IOException {
 		logger.entering(CommonTestSetup.class.getName(), "CommonTestSetup_setupMethod");
 		
-		String browserBinaryPath = TestProperties.getInstance().getProperty("browser.binary.path");
-		String absBrowserBinaryPath = browserInstallationDir.getAbsolutePath() + File.separator + browserBinaryPath.replace('/', File.separatorChar);
+		String driverBinaryFilename = TestProperties.getInstance().getProperty("driver.binary.filename");
+		String absDriverBinaryFilename = driverInstallationDir.getAbsolutePath() + File.separator + driverBinaryFilename.replace('/', File.separatorChar);
 		
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
 		
-		String browserType = TestProperties.getInstance().getProperty("browser.type");
+		String driverType = TestProperties.getInstance().getProperty("driver.type");
 		
-		if (browserType.equals("firefox")) {
-			webDriver = new FirefoxDriver(new FirefoxBinary(new File(absBrowserBinaryPath)), new FirefoxProfile(), dc);
+		if (driverType.equals("firefox")) {
+			webDriver = new FirefoxDriver(new FirefoxBinary(new File(absDriverBinaryFilename)), new FirefoxProfile(), dc);
 		}
-		else if (browserType.equals("chromium")) {
-			System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, absBrowserBinaryPath);
+		else if (driverType.equals("chromium")) {
+			System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, absDriverBinaryFilename);
 			
-			String chromiumBinaryPath = TestProperties.getInstance().getProperty("chromium.binary.path");
-			String absChromiumBinaryPath = browserInstallationDir.getAbsolutePath() + File.separator + chromiumBinaryPath.replace('/', File.separatorChar);
+			String chromiumBinaryFilename = TestProperties.getInstance().getProperty("chromium.binary.filename");
+			String absChromiumBinaryFilename = driverInstallationDir.getAbsolutePath() + File.separator + chromiumBinaryFilename.replace('/', File.separatorChar);
 			
 			ChromeOptions co = new ChromeOptions();
-			co.setBinary(absChromiumBinaryPath);
+			co.setBinary(absChromiumBinaryFilename);
 			
 			dc.setCapability(ChromeOptions.CAPABILITY, co);
 			
 			webDriver = new ChromeDriver(dc);
 		}
 		else {
-			throw new TypeNotPresentException(browserType, null);
+			throw new TypeNotPresentException(driverType, null);
 		}
 	}
 	
@@ -145,14 +145,14 @@ public class CommonTestSetup {
 		tempDir = null;
 	}
 	
-	private static void installBrowser(String type, String version, String arch, String lang, String tarBz2Filename) throws IOException, ArchiveException {
+	private static void installDriver(String type, String version, String arch, String lang, String tarBz2Basename) throws IOException, ArchiveException {
 		// Copy to temporary directory
 		
-		File tarBz2File = new File(tempDir, tarBz2Filename);
-		File tarFile = new File(tempDir, tarBz2Filename.replaceAll("\\.bz2$", ""));
+		File tarBz2File = new File(tempDir, tarBz2Basename);
+		File tarFile = new File(tempDir, tarBz2Basename.replaceAll("\\.bz2$", ""));
 		
 		InputStream tarBz2ResourceInputStream = CommonTestSetup.class.getResourceAsStream(
-			"/browsers/" + type + "/" + version + "/" + arch + "/" + lang + "/" + tarBz2Filename
+			"/browsers/" + type + "/" + version + "/" + arch + "/" + lang + "/" + tarBz2Basename
 		);
 		FileOutputStream tarBz2FileOutputStream = new FileOutputStream(tarBz2File);
 		IOUtils.copy(tarBz2ResourceInputStream, tarBz2FileOutputStream);
@@ -179,14 +179,14 @@ public class CommonTestSetup {
 		
 		// Extract
 		
-		browserInstallationDir = new File(tempDir, tarBz2Filename.replaceAll("\\.tar\\.bz2$", ""));
-		browserInstallationDir.mkdir();
+		driverInstallationDir = new File(tempDir, tarBz2Basename.replaceAll("\\.tar\\.bz2$", ""));
+		driverInstallationDir.mkdir();
 		final InputStream tarFileInputStream = new FileInputStream(tarFile);
 		final TarArchiveInputStream tarArchiveInputStream = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", tarFileInputStream);
 		TarArchiveEntry entry = null;
 		
 		while (null != (entry = (TarArchiveEntry) tarArchiveInputStream.getNextEntry())) {
-			File extractFile = new File(browserInstallationDir, entry.getName());
+			File extractFile = new File(driverInstallationDir, entry.getName());
 			
 			if (entry.isDirectory()) {
 				if (!extractFile.exists()) {
@@ -210,9 +210,9 @@ public class CommonTestSetup {
 		java.nio.file.Files.delete(tarBz2File.toPath());
 	}
 	
-	private static void uninstallBrowser() throws IOException {
-		FileUtils.deleteDirectory(browserInstallationDir);
-		browserInstallationDir = null;
+	private static void uninstallDriver() throws IOException {
+		FileUtils.deleteDirectory(driverInstallationDir);
+		driverInstallationDir = null;
 	}
 	
 	private static void installWebPages() throws IOException {
