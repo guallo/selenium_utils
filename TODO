@@ -2,4 +2,4 @@
 2) Check for the release of a Chromium Driver (on https://chromedriver.storage.googleapis.com/index.html)
 	that supports the current Chromium Browser version.
 3) Rename 'browsers' resource to 'drivers'.
-4) Remove 'driver.lang' property and corresponding resource folder.
+4) Put Driver version instead of Browser version into 'driver.version' property.

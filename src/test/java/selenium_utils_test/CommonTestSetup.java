@@ -79,10 +79,9 @@ public class CommonTestSetup {
 		String driverType = TestProperties.getInstance().getProperty("driver.type");
 		String driverVersion = TestProperties.getInstance().getProperty("driver.version");
 		String driverArch = TestProperties.getInstance().getProperty("driver.arch");
-		String driverLang = TestProperties.getInstance().getProperty("driver.lang");
 		String driverTarBz2Basename = TestProperties.getInstance().getProperty("driver.tar.bz2.basename");
 		
-		installDriver(driverType, driverVersion, driverArch, driverLang, driverTarBz2Basename);
+		installDriver(driverType, driverVersion, driverArch, driverTarBz2Basename);
 		installWebPages();
 	}
 	
@@ -145,14 +144,14 @@ public class CommonTestSetup {
 		tempDir = null;
 	}
 	
-	private static void installDriver(String type, String version, String arch, String lang, String tarBz2Basename) throws IOException, ArchiveException {
+	private static void installDriver(String type, String version, String arch, String tarBz2Basename) throws IOException, ArchiveException {
 		// Copy to temporary directory
 		
 		File tarBz2File = new File(tempDir, tarBz2Basename);
 		File tarFile = new File(tempDir, tarBz2Basename.replaceAll("\\.bz2$", ""));
 		
 		InputStream tarBz2ResourceInputStream = CommonTestSetup.class.getResourceAsStream(
-			"/browsers/" + type + "/" + version + "/" + arch + "/" + lang + "/" + tarBz2Basename
+			"/browsers/" + type + "/" + version + "/" + arch + "/" + tarBz2Basename
 		);
 		FileOutputStream tarBz2FileOutputStream = new FileOutputStream(tarBz2File);
 		IOUtils.copy(tarBz2ResourceInputStream, tarBz2FileOutputStream);
