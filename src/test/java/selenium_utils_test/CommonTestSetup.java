@@ -98,18 +98,21 @@ public class CommonTestSetup {
 	public void CommonTestSetup_setupMethod() throws IOException {
 		logger.entering(CommonTestSetup.class.getName(), "CommonTestSetup_setupMethod");
 		
-		String driverBinaryFilename = TestProperties.getInstance().getProperty("driver.binary.filename");
-		String absDriverBinaryFilename = driverInstallationDir.getAbsolutePath() + File.separator + driverBinaryFilename.replace('/', File.separatorChar);
-		
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
 		
 		String driverType = TestProperties.getInstance().getProperty("driver.type");
 		
 		if (driverType.equals("firefox")) {
-			webDriver = new FirefoxDriver(new FirefoxBinary(new File(absDriverBinaryFilename)), new FirefoxProfile(), dc);
+			String firefoxBinaryFilename = TestProperties.getInstance().getProperty("firefox.binary.filename");
+			String absFirefoxBinaryFilename = driverInstallationDir.getAbsolutePath() + File.separator + firefoxBinaryFilename.replace('/', File.separatorChar);
+			
+			webDriver = new FirefoxDriver(new FirefoxBinary(new File(absFirefoxBinaryFilename)), new FirefoxProfile(), dc);
 		}
 		else if (driverType.equals("chromium")) {
+			String driverBinaryFilename = TestProperties.getInstance().getProperty("driver.binary.filename");
+			String absDriverBinaryFilename = driverInstallationDir.getAbsolutePath() + File.separator + driverBinaryFilename.replace('/', File.separatorChar);
+			
 			System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, absDriverBinaryFilename);
 			
 			String chromiumBinaryFilename = TestProperties.getInstance().getProperty("chromium.binary.filename");
