@@ -1,10 +1,14 @@
-What's new in version 1.0?
-==========================
+What's new in version 1.0.0?
+============================
 
 Release date: 2018-02-18
 
 Commits
 -------
+
+- 321e98c Updated version number.
+
+- 77d4611 Updated CHANGELOG file.
 
 - 7b6dd45 Renamed 'driver.binary.filename' property to 'firefox.binary.filename' for the case of 'firefox'.
 
