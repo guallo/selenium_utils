@@ -34,4 +34,19 @@ public interface AdvancedSearchContext {
 	boolean areElementsPresents(By locator, long timeOutInSeconds);
 	boolean areElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis);
 	boolean areElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis, int atLeast);
+	
+	/**
+	 * waitUntilIsElementPresent
+	 */
+	public AdvancedSearchContext waitUntilIsElementPresent(By locator);
+	public AdvancedSearchContext waitUntilIsElementPresent(By locator, long timeOutInSeconds);
+	public AdvancedSearchContext waitUntilIsElementPresent(By locator, long timeOutInSeconds, long sleepInMillis);
+	
+	/**
+	 * waitUntilAreElementsPresents
+	 */
+	public AdvancedSearchContext waitUntilAreElementsPresents(By locator);
+	public AdvancedSearchContext waitUntilAreElementsPresents(By locator, long timeOutInSeconds);
+	public AdvancedSearchContext waitUntilAreElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis);
+	public AdvancedSearchContext waitUntilAreElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis, int atLeast);
 }

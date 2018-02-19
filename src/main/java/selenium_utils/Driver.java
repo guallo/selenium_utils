@@ -177,15 +177,17 @@ public class Driver implements WrapsDriver, AdvancedSearchContext, TakesScreensh
 	/**
 	 * waitUntilIsElementPresent
 	 */
-	
+	@Override
 	public Driver waitUntilIsElementPresent(By locator) {
 		return waitUntilIsElementPresent(locator, Globals.DEFAULT_TIME_OUT_IN_SECONDS, Globals.DEFAULT_SLEEP_IN_MILLIS);
 	}
 	
+	@Override
 	public Driver waitUntilIsElementPresent(By locator, long timeOutInSeconds) {
 		return waitUntilIsElementPresent(locator, timeOutInSeconds, Globals.DEFAULT_SLEEP_IN_MILLIS);
 	}
 	
+	@Override
 	public Driver waitUntilIsElementPresent(By locator, long timeOutInSeconds, long sleepInMillis) {
 		DriverWait wait = new DriverWait(this, timeOutInSeconds, sleepInMillis);
 		wait.until(ExpectedDriverConditions.isElementPresent(locator));
@@ -195,19 +197,22 @@ public class Driver implements WrapsDriver, AdvancedSearchContext, TakesScreensh
 	/**
 	 * waitUntilAreElementsPresents
 	 */
-	
+	@Override
 	public Driver waitUntilAreElementsPresents(By locator) {
 		return waitUntilAreElementsPresents(locator, Globals.DEFAULT_TIME_OUT_IN_SECONDS, Globals.DEFAULT_SLEEP_IN_MILLIS, Globals.DEFAULT_AT_LEAST);
 	}
 	
+	@Override
 	public Driver waitUntilAreElementsPresents(By locator, long timeOutInSeconds) {
 		return waitUntilAreElementsPresents(locator, timeOutInSeconds, Globals.DEFAULT_SLEEP_IN_MILLIS, Globals.DEFAULT_AT_LEAST);
 	}
 	
+	@Override
 	public Driver waitUntilAreElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis) {
 		return waitUntilAreElementsPresents(locator, timeOutInSeconds, sleepInMillis, Globals.DEFAULT_AT_LEAST);
 	}
 	
+	@Override
 	public Driver waitUntilAreElementsPresents(By locator, long timeOutInSeconds, long sleepInMillis, int atLeast) {
 		DriverWait wait = new DriverWait(this, timeOutInSeconds, sleepInMillis);
 		wait.until(ExpectedDriverConditions.areElementsPresents(locator, atLeast));
