@@ -1067,31 +1067,35 @@ public class Element implements WrapsElement, AdvancedSearchContext {
 	 * 
 	 * @SideEffects Moves the mouse to the middle of the element.
 	 */
-	public void scrollIntoView() {
+	public Element scrollIntoView() {
 		WebDriver webDriver = ((WrapsDriver) _webElement).getWrappedDriver();
 		(new Actions(webDriver)).moveToElement(_webElement).perform();
+		return this;
 	}
 	
 	/**
 	 * click
 	 */
-	public void click() {
+	public Element click() {
 		click(true);
+		return this;
 	}
 	
-	public void click(boolean scroll) {
+	public Element click(boolean scroll) {
 		if (scroll) {
 			scrollIntoView();
 		}
 		_webElement.click();
+		return this;
 	}
 	
 	/**
 	 * doubleClick
 	 */
 	
-	public void doubleClick() {
+	public Element doubleClick() {
 		WebDriver webDriver = ((WrapsDriver) _webElement).getWrappedDriver();
 		(new Actions(webDriver)).doubleClick(_webElement).perform();
+		return this;
 	}
 }
